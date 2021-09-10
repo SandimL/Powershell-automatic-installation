@@ -1,32 +1,67 @@
-﻿$program_list = @('telegram', 'gsudo','steam', 'git', 'winrar', '032920923trtes')
-$program_finded = @()
-$program_n_finded = @()
-$continue = ''
+﻿$listPath = 'programList.json'
+$programs = (Get-Content -Raw -Path $listPath | ConvertFrom-Json).list
+$listOk = @()
+$someFailed = $false
+$choice = $null
 
-foreach($i in $program_list){
-    $result = choco find $i
-    if($result.Length -gt 2){
-        $program_finded += $i
-    }else{
-        echo "Não foi possível encontrar o pacote: " $i
-        $program_n_finded += $i
+
+function startProccess{
+    Write-Output "`nChecking packages...`n"
+    foreach($i in $programs){
+        $result = choco find $i
+        if($result.Length -gt 2){
+            $listOk = $listOk + $i
+            $i + ' - ok'
+        }else{
+            $someFailed = $true
+            $i + ' - failed'
+        }
+    }
+    Write-Output "`n"
+
+    if($someFailed){
+        Write-Warning "Failed to find some packages"
+
+        while ($choice -notmatch "[y|n]"){
+            $choice = Read-Host "Wish to continue? (y/n):"
+        }
+    }
+
+    $hasUserAccepted = $null -eq $continue -or $continue -eq 'y'
+
+    if($hasUserAccepted){
+        startInstallation
+    }
+    else{
+        Write-Error "Verify your package list and try again"
     }
 }
 
-if($program_n_finded -gt 0){
-    echo 'Falha ao encontrar o(s) pacote(s): '$program_n_finded
-    $continue = Read-Host -Prompt 'Deseja continuar? [y - to yes] / [n - to no]' 
+
+function progressBar{
+    param($percent)
+    Write-Progress -Activity 'Installation in progress' -PercentComplete $percent
 }
 
-if($continue -eq 'y' -or $continue -eq ''){
-    echo 'Lista de pacotes encontrados: '$program_finded
 
-    echo (choco install $program_finded -y --acceptlicense --force)
-
-    $colItems = Get-WmiObject Win32_Process -Filter "Name='powershell.exe' AND CommandLine LIKE '%choco install%'"
-    echo $colItems
-
+function install{
+    param($item)
+    choco install $item -y --acceptlicense --force
 }
-else{
-    echo "Verifique a lista de pacotes e tente novamente"
+
+
+function startInstallation{
+    try{
+        Write-Output "Starting installation `n"
+        for ($i = 1; $i -le $listOk.length; $i++){
+            progressBar(($i/$listOk.length*100))
+            install($listOk[$i - 1])
+        }
+    }
+    catch{
+        Write-Error "Failure to install packages"
+    }
 }
+
+
+startProccess
