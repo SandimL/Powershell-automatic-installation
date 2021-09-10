@@ -1,5 +1,5 @@
-﻿$listPath = 'programList.json'
-$programs = (Get-Content -Raw -Path $listPath | ConvertFrom-Json).list
+﻿$packageListName = 'package_list.json'
+$programs = (Get-Content -Raw -Path $packageListName | ConvertFrom-Json).list
 $listOk = @()
 $someFailed = $false
 $choice = $null

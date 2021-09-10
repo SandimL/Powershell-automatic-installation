@@ -1,7 +1,7 @@
-﻿$installChoco = '.\install_choco.ps1'
-$installPrograms = '.\install_programs.ps1'
-$updateAndCustomizePswh = '.\update_and_customize_pswh.ps1'
+﻿$installPrograms = '.\install_programs.ps1'
+$customizePswh = '.\customize_pswh.ps1'
 
-Invoke-Expression $installChoco
+Invoke-Expression (Invoke-RestMethod 'https://community.chocolatey.org/install.ps1')
+
 Invoke-Expression $installPrograms
-Invoke-Expression $updateAndCustomizePswh
+<#Invoke-Expression $customizePswh#>
