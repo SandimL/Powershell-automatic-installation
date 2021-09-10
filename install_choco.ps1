@@ -1,5 +1,5 @@
 ﻿try{
-    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    Invoke-Expression (Invoke-RestMethod 'https://community.chocolatey.org/install.ps1')
 }
 catch{
     exit 1
