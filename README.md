@@ -11,7 +11,7 @@ _A [Powershell](https://docs.microsoft.com/pt-br/powershell/scripting/overview?v
 
 If you never executed any pswh script, execute this on Powershell command line to enable running scripts.
 ```ps1
-Set-ExecutionPolicy RemoteSigned
+Set-ExecutionPolicy Bypass
 ``` 
 <br>
 
