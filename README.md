@@ -8,13 +8,11 @@ _A [Powershell](https://docs.microsoft.com/pt-br/powershell/scripting/overview?v
 
 ## Installation
 
-If you never executed any pswh script, execute this on Powershell command line to enable running scripts.
+If you have never executed any pswh script, run the script bellow from the Powershell command line to enable the execution of scripts until the installation finishes
 ```ps1
 Set-ExecutionPolicy Bypass
 ``` 
 <br>
-
-
 
 ## Choosing packages
 _To find the name of the packages you want, search [here ](https://community.chocolatey.org/packages)_
@@ -28,3 +26,12 @@ _To find the name of the packages you want, search [here ](https://community.cho
 ## Running 
 In Powershell, go to the project folder, type ```.\run.ps1``` and press enter.
 
+<br>
+
+
+## Note
+
+When it finishes executing, run this script to maintain your computer's security
+```ps1
+Set-ExecutionPolicy AllSigned 
+``` 
